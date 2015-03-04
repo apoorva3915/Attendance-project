@@ -74,7 +74,7 @@ int main(void)
    } 
 
 }
- 			 
+//initiallizing the lcd 			 
 void cct_init(void)
 {
 
@@ -82,13 +82,13 @@ void cct_init(void)
 	P2 = 0x00;   
 	P3 = 0x00;      
 }
-
+//to take care of the time lap between sending commands andd display on the lcd
 void delay(int a)
 {
    int i;
    for(i=0;i<a;i++);   
 }
-
+//to display on  the lcd we need to change the enable from low to high or high to low , so this function creates a jump 
 void writedata(char t)
 {
    RS = 1;             
@@ -99,7 +99,7 @@ void writedata(char t)
    delay(150);
 }
 
-
+//to initiate the specicfic command for the lcd 
 void writecmd(int z) {
 		RS = 0;             
 		P2 = z;             
@@ -108,7 +108,7 @@ void writecmd(int z) {
 		E  = 0;             
 		delay(150);
 }
-
+//command to display on lcd
 void lcdinit(void) {
   
 		writecmd(0x38);    
@@ -117,11 +117,8 @@ void lcdinit(void) {
 		writecmd(0x06);    
 }
 
-void Return(void) {
-  writecmd(0x02);
-    delay(1500);
-}
 
+//to read the switches from the keypad and return the character to be displayed
 char READ_SWITCHES(void)	
 {	
 	RowA = 0; RowB = 1; RowC = 1; RowD = 1; 	
@@ -155,7 +152,7 @@ char READ_SWITCHES(void)
 	return 'n';           	
 	}
 
-
+//to wait till the key is pressed 
 char get_key(void)           
 {
 	char key= 'n';              
@@ -176,7 +173,7 @@ void lcd_display(char *disp) {
 				writedata(disp[x]);
 		}
 }
-
+//display the count
 void lcd_number(int a){
 	
 	int d=0;

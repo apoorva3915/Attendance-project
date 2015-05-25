@@ -181,10 +181,10 @@ sbit CY   = 0xD7;
 Interrupt Vectors:
 Interrupt Address = (Number * 8) + 3
 ------------------------------------------------*/
-#define IE0_VECTOR	0  /* 0x03 External Interrupt 0 */
-#define TF0_VECTOR	1  /* 0x0B Timer 0 */
-#define IE1_VECTOR	2  /* 0x13 External Interrupt 1 */
-#define TF1_VECTOR	3  /* 0x1B Timer 1 */
-#define SIO_VECTOR	4  /* 0x23 Serial port */
+#define IE0_VECTOR  0  /* 0x03 External Interrupt 0 */
+#define TF0_VECTOR  1  /* 0x0B Timer 0 */
+#define IE1_VECTOR  2  /* 0x13 External Interrupt 1 */
+#define TF1_VECTOR  3  /* 0x1B Timer 1 */
+#define SIO_VECTOR  4  /* 0x23 Serial port */
 
 #endif

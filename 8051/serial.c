@@ -13,17 +13,17 @@
  * length of the transmission (in bytes). 
  */
 void Transmit(unsigned char *TOut, unsigned int TLen) {
-	unsigned int i;
-	
-	InitCom();
-	TR1 = 1;		// Raise TR1 bit of TCON register to start Timer 1
-	for (i = 0; i < TLen; i++) {
-		TI = 0;					// Clear TI bit of SCON register
-		SBUF = *(TOut + i);		// Write to SBUF register the byte to be transmitted
-		while (!TI)				// Monitor TI flag bit of SCON register
-			;
-	}
-	TR1 = 0; 		// Clear the TR1 bit of TCON register to stop Timer 1
+    unsigned int i;
+    
+    InitCom();
+    TR1 = 1;        // Raise TR1 bit of TCON register to start Timer 1
+    for (i = 0; i < TLen; i++) {
+        TI = 0;                 // Clear TI bit of SCON register
+        SBUF = *(TOut + i);     // Write to SBUF register the byte to be transmitted
+        while (!TI)             // Monitor TI flag bit of SCON register
+            ;
+    }
+    TR1 = 0;        // Clear the TR1 bit of TCON register to stop Timer 1
 }
 
 /* The serial communication is received with leading start bit and trailing stop 
@@ -37,17 +37,17 @@ void Transmit(unsigned char *TOut, unsigned int TLen) {
  * stored, and the length of the transmission to be received (in bytes). 
  */
 void Receive(unsigned char *RIn, unsigned int RLen) {
-	unsigned int i;
-	
-	InitCom();
-	TR1 = 1;			// Raise TR1 bit of TCON register to start Timer 1
-	for (i = 0; i < RLen; i++) {
-		RI = 0;					// Clear RI bit of SCON register
-		while (!RI)				// Monitor RI flag bit of SCON register
-			;
-		*(RIn + i) = SBUF;		// Read from SBUF register the byte that was received
-	}
-	TR1 = 0; 		// Clear the TR1 bit of TCON register to stop Timer 1
+    unsigned int i;
+    
+    InitCom();
+    TR1 = 1;            // Raise TR1 bit of TCON register to start Timer 1
+    for (i = 0; i < RLen; i++) {
+        RI = 0;                 // Clear RI bit of SCON register
+        while (!RI)             // Monitor RI flag bit of SCON register
+            ;
+        *(RIn + i) = SBUF;      // Read from SBUF register the byte that was received
+    }
+    TR1 = 0;        // Clear the TR1 bit of TCON register to stop Timer 1
 }
 
 /* InitCom() is used to initialize 8051 for serial communication. It sets the 8051 
@@ -58,8 +58,8 @@ void Receive(unsigned char *RIn, unsigned int RLen) {
  * achieved only with XTAL = 22.1184 MHz.
  */
 void InitCom() {
-	PCON |= 0x80;	// Raise SMOD bit of PCON to double the baud rate
-	TMOD |= 0x20;	// Use Timer 1 in mode 2, 8-bit auto-reload
-	TH1 = 0xFE; 	// Set TH1 for 57600 baud rate when XTAL = 22.1184 MHz and SMOD is raised
-	SCON = 0x50; 	// Serial Mode 1, 8-bit data, 1 stop bit, 1 start bit, REN set
+    PCON |= 0x80;   // Raise SMOD bit of PCON to double the baud rate
+    TMOD |= 0x20;   // Use Timer 1 in mode 2, 8-bit auto-reload
+    TH1 = 0xFE;     // Set TH1 for 57600 baud rate when XTAL = 22.1184 MHz and SMOD is raised
+    SCON = 0x50;    // Serial Mode 1, 8-bit data, 1 stop bit, 1 start bit, REN set
 }

@@ -75,3 +75,19 @@ uint1 getNTemp() {
         return CMD_FAIL;
     }
 }
+
+uint1 clrLib() {
+    uint1 cmdData[] = {0x0D, '\0'};
+
+    cmdTransmit(cmdData);
+    switch (*cmdReceive(1)) {
+    case 0x00:
+        return getNTemp();
+    case 0x01:
+        return ERR_COMM;
+    case 0x11:
+        return ERR_SYS;
+    default:
+        return CMD_FAIL;
+    }
+}

@@ -26,5 +26,6 @@ uint1 getNTemp();
 uint1 genImg();
 uint1 genChar(uint1 buffID);
 uint1 genTemp();
+uint1 strTemp(uint1 buffID);
 
 #endif

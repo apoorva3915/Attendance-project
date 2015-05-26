@@ -18,8 +18,7 @@
 typedef unsigned short uint2;
 typedef unsigned char uint1;
 
-uint2 length(uint1 *DATA);
-void cmdTransmit(uint1 *DATA);
+void cmdTransmit(uint1 *DATA, uint2 lenDATA);
 uint1 *cmdReceive(uint2 lenDATA);
 uint1 getNTemp();
 uint1 clrLib();

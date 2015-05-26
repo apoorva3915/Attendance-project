@@ -4,15 +4,7 @@
 uint1 modAddress[] = {0xFF, 0xFF, 0xFF, 0xFF};
 uint2 nTemp;
 
-uint2 length(uint1 *DATA) {
-    uint2 len;
-
-    for (len = 0; *(DATA + len) != '\0'; len++)
-        ;
-    return len;
-}
-
-void cmdTransmit(uint1 *DATA) {
+void cmdTransmit(uint1 *DATA, uint2 lenDATA) {
     uint1 cmd[MAX_CMD_LENGTH];
     extern uint1 modAddress[];
     uint2 checksum = 0x01, len, i;
@@ -23,14 +15,14 @@ void cmdTransmit(uint1 *DATA) {
         cmd[i + 2] = modAddress[i];
     cmd[6] = 0x01;
 
-    len = length(DATA) + 2;
+    len = lenDATA + 2;
     cmd[8] = len;
     len = len >> 8;
     cmd[7] = len;
     len = cmd[8] + (cmd[7] << 8);
     checksum += cmd[7] + cmd[8];
 
-    for (i = 0; *(DATA + i) != '\0'; i++) {
+    for (i = 0; i < lenDATA; i++) {
         cmd[i + 9] = *(DATA + i);
         checksum += *(DATA + i);
     }
@@ -44,14 +36,13 @@ void cmdTransmit(uint1 *DATA) {
 }
 
 uint1 *cmdReceive(uint2 lenDATA) {
-    uint1 ack[MAX_ACK_LENGTH], DATA[lenDATA + 1];
+    uint1 ack[MAX_ACK_LENGTH], DATA[lenDATA];
     uint2 i;
 
     Receive(ack, 11 + lenDATA);
     for (i = 0; i < lenDATA; i++) {
         DATA[i] = ack[9 + i];
     }
-    DATA[i] = '\0';
     
     return DATA;
 }

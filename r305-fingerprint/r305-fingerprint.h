@@ -22,4 +22,8 @@ uint2 length(uint1 *DATA);
 void cmdTransmit(uint1 *DATA);
 uint1 *cmdReceive(uint2 lenDATA);
 
+uint1 genImg();
+uint1 genChar(uint1 buffID);
+uint1 genTemp();
+
 #endif

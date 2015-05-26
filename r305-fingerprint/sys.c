@@ -48,11 +48,11 @@ uint1 *cmdReceive(uint2 lenDATA) {
 }
 
 uint1 getNTemp() {
-    uint1 cmdData[] = {0x1D, '\0'};
+    uint1 cmdData[] = {0x1D};
     extern uint2 nTemp;
     uint1 *ackData, nTempL, nTempH;
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 1);
     ackData = cmdReceive(3);
     switch (*ackData) {
     case 0x00:
@@ -68,9 +68,9 @@ uint1 getNTemp() {
 }
 
 uint1 clrLib() {
-    uint1 cmdData[] = {0x0D, '\0'};
+    uint1 cmdData[] = {0x0D};
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 1);
     switch (*cmdReceive(1)) {
     case 0x00:
         return getNTemp();

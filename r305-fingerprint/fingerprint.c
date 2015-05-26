@@ -1,12 +1,10 @@
 #include "../8051/8051.h"
 #include "r305-fingerprint.h"
 
-extern uint2 nTemp;
-
 uint1 genImg() {
-    uint1 cmdData[] = {0x01, '\0'};
+    uint1 cmdData[] = {0x01};
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 1);
     switch (*cmdReceive(1)) {
     case 0x00:
         return CMD_SUCCESS;
@@ -21,9 +19,9 @@ uint1 genImg() {
 }
 
 uint1 genChar(uint1 buffID) {
-    uint1 cmdData[] = {0x02, buffID, '\0'};
+    uint1 cmdData[] = {0x02, buffID};
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 2);
     switch (*cmdReceive(1)) {
     case 0x00:
         return CMD_SUCCESS;
@@ -39,9 +37,9 @@ uint1 genChar(uint1 buffID) {
 }
 
 uint1 genTemp() {
-    uint1 cmdData[] = {0x05, '\0'};
+    uint1 cmdData[] = {0x05};
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 1);
     switch (*cmdReceive(1)) {
     case 0x00:
         return CMD_SUCCESS;
@@ -56,12 +54,13 @@ uint1 genTemp() {
 
 uint1 strTemp(uint1 buffID) {
     uint1 pageIDL, pageIDH;
+    extern uint2 nTemp;
     ++nTemp;
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
-    uint1 cmdData[] = {0x06, buffID, pageIDH, pageIDL, '\0'};
+    uint1 cmdData[] = {0x06, buffID, pageIDH, pageIDL};
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 4);
     switch (*cmdReceive(1)) {
     case 0x00:
         return ENROL_SUCCESS;
@@ -79,10 +78,10 @@ uint1 strTemp(uint1 buffID) {
 }
 
 uint1 srchLib(uint1 buffID, uint2 *pageID) {
-    uint1 cmdData[] = {0x04, buffID, 0x00, 0x00, 0x01, 0xFF, '\0'};
+    uint1 cmdData[] = {0x04, buffID, 0x00, 0x00, 0x01, 0xFF};
     uint1 *ackData, pageIDH, pageIDL;
 
-    cmdTransmit(cmdData);
+    cmdTransmit(cmdData, 6);
     ackData = cmdReceive(5);
     switch (*ackData) {
     case 0x00:

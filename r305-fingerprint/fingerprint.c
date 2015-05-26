@@ -56,12 +56,7 @@ uint1 genTemp() {
 
 uint1 strTemp(uint1 buffID) {
     uint1 pageIDL, pageIDH;
-
-    uint1 i = getNTemp();
-    if (i != CMD_SUCCESS)
-        return i;
     ++nTemp;
-
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
     uint1 cmdData[] = {0x06, buffID, pageIDH, pageIDL, '\0'};

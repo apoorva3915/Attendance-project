@@ -38,7 +38,7 @@ void cmdTransmit(uint1 *DATA) {
     checksum = checksum >> 8;
     cmd[--i] = checksum;
 
-    Transmit(cmd, 11 + len);
+    Transmit(cmd, 9 + len);
 }
 
 uint1 *cmdReceive(uint2 lenDATA) {

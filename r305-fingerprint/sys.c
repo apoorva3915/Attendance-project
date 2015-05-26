@@ -2,6 +2,7 @@
 #include "r305-fingerprint.h"
 
 uint1 modAddress[] = {0xFF, 0xFF, 0xFF, 0xFF};
+uint2 nTemp;
 
 uint2 length(uint1 *DATA) {
     uint2 len;
@@ -13,6 +14,7 @@ uint2 length(uint1 *DATA) {
 
 void cmdTransmit(uint1 *DATA) {
     uint1 cmd[MAX_CMD_LENGTH];
+    extern uint1 modAddress[];
     uint2 checksum = 0x01, len, i;
 
     cmd[0] = 0xEF;
@@ -52,4 +54,24 @@ uint1 *cmdReceive(uint2 lenDATA) {
     DATA[i] = '\0';
     
     return DATA;
+}
+
+uint1 getNTemp() {
+    uint1 cmdData[] = {0x1D, '\0'};
+    extern uint2 nTemp;
+    uint1 *ackData, nTempL, nTempH;
+
+    cmdTransmit(cmdData);
+    ackData = cmdReceive(3);
+    switch (*ackData) {
+    case 0x00:
+        nTempH = *(ackData + 1);
+        nTempL = *(ackData + 2);
+        nTemp = (nTempH << 8) + nTempL;
+        return CMD_SUCCESS;
+    case 0x01:
+        return ERR_COMM;
+    default:
+        return CMD_FAIL;
+    }
 }

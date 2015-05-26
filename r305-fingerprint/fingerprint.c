@@ -69,16 +69,37 @@ uint1 strTemp(uint1 buffID) {
     cmdTransmit(cmdData);
     switch (*cmdReceive(1)) {
     case 0x00:
-        return CMD_SUCCESS;
+        return ENROL_SUCCESS;
     case 0x01:
         --nTemp;
         return ERR_COMM;
     case 0x0B:
     case 0x18:
         --nTemp;
-        return ERR_SYS;
+        return ENROL_FAIL;
     default:
         --nTemp;
+        return CMD_FAIL;
+    }
+}
+
+uint1 srchLib(uint1 buffID, uint2 *pageID) {
+    uint1 cmdData[] = {0x04, buffID, 0x00, 0x00, 0x01, 0xFF, '\0'};
+    uint1 *ackData, pageIDH, pageIDL;
+
+    cmdTransmit(cmdData);
+    ackData = cmdReceive(5);
+    switch (*ackData) {
+    case 0x00:
+        pageIDH = *(ackData + 1);
+        pageIDL = *(ackData + 2);
+        *pageID = (pageIDH << 8) + pageIDL;
+        return MATCH_SUCCESS;
+    case 0x01:
+        return ERR_COMM;
+    case 0x09:
+        return MATCH_FAIL;
+    default:
         return CMD_FAIL;
     }
 }

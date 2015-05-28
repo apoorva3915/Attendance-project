@@ -29,4 +29,8 @@ uint1 genTemp();
 uint1 strTemp(uint1 buffID);
 uint1 srchLib(uint1 buffID, uint2 *pageID);
 
+uint1 scan();
+uint1 auth(uint2 *uID);
+uint1 enrol();
+
 #endif

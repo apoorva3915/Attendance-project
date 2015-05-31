@@ -105,16 +105,19 @@ configure timer 1 by initializing TCON and TMOD.
         delay_ms(100);
         initial_lcd();
         while(1){
+	  
         write_lcd(0x81,0);
-        string_to_lcd("ARE");
+        string_to_lcd("HELLO");
         write_lcd(0xc4,0);
-        string_to_lcd("YOU");
+        string_to_lcd("EVERYONE");
         write_lcd(0x01,0);
         delay_ms(100);
+	
+	
         write_lcd(0x81,0);
-        string_to_lcd("PRESENT");
+        string_to_lcd("PLACE YOUR");
         write_lcd(0xc4,0);
-        string_to_lcd("TODAY")
+        string_to_lcd("FINGER")
         write_lcd(0x01,0);
         delay_ms(100);
 ///////// Add           
@@ -125,21 +128,21 @@ configure timer 1 by initializing TCON and TMOD.
                 delay_ms(50);
                 FP_ADD = 1;
                  
-                // Check response byte
-                response = mygetchar(); //loop till character received
-                if(response==0xFF) // if error
+               
+                response = scan(); //loop till character received
+                if(response==CMD_SUCCESS) // if error
                 {
-                    // Do something like LCD error print
+                    
                     write_lcd(0xc4,0);
-                    string_to_lcd("ERROR");
+                    string_to_lcd("SUCCESS");
                     write_lcd(0x01,0);
                     delay_ms(100);
                 } else
                 {                   
                     // response variable has the newly added ID
-                    // Do something like LCD ID print like add succesful with ID
+
                     write_lcd(0xc4,0);
-                    string_to_lcd("SUCCESS");
+                    string_to_lcd("ERROR");
                     write_lcd(0x01,0);
                     delay_ms(100);
             }
@@ -152,20 +155,20 @@ configure timer 1 by initializing TCON and TMOD.
                 delay_ms(50);
                 FP_EMPTY = 1;
                  
-                // Check response byte
-                response = mygetchar(); //loop till character received
-                if(response==0xFF) // if error
+                
+                response = clr_lib(); 
+                if(response==CMD_SUCCESS) // 
                 {
-                    // Do something like LCD error print for empty failed
+                    
                    write_lcd(0xc4,0);
-                    string_to_lcd("ERROR");
+                    string_to_lcd("SUCCESS");
                     write_lcd(0x01,0);
                     delay_ms(100);
                 } else
                 {                   
-                    // Do something like LCD print for empty success
+                   
                     write_lcd(0xc4,0);
-                    string_to_lcd("SUCCESS");
+                    string_to_lcd("ERROR");
                     write_lcd(0x01,0);
                     delay_ms(100);                 
                 }
@@ -180,7 +183,7 @@ configure timer 1 by initializing TCON and TMOD.
                 FP_SEARCH = 1;
                  
                 // Check response byte
-                response = mygetchar(); //loop till character received
+                response = (); //loop till character received
                 if(response==0xFF) // if error
                 {
                     // Do something like LCD error print

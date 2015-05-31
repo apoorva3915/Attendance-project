@@ -10,9 +10,13 @@ void string_to_lcd(unsigned char *s);
 void write_lcd(unsigned char dat,unsigned int com);
 void delay_ms(unsigned int x);
 
-//pin description for the lcd interface
+//pin description for the lcd interface --- 4 bit mode
 
-sfr  LCD=0xa0;//special function register defined
+sbit D4=P1^2;
+sbit D5=P1^3;
+sbit D6=P1^4;
+sbit D7=P1^5;
+
 sbit EN=P1^6;//Enable pin is for starting or enabling the module. A high
              //to low pulse of about 450ns pulse is given to this pin.
 
@@ -22,11 +26,13 @@ sbit RS=P1^7;//RS is the register select pin used to write display
              //sequence and other commands this pin should low.
  
 sbit SW_ADD        = P1^0;
-sbit SW_EMPTY      = P1^1;
-sbit SW_SEARCH     = P1^2;
+sbit SW_SEARCH     = P1^1;
+
+sbit LED = P3^5 ;
+
  
  
-sbit FP_ADD         = P3^2;
+sbit FP_ADD        = P3^2;
 sbit FP_EMPTY       = P3^3;
 sbit FP_SEARCH      = P3^4;
  
@@ -54,10 +60,10 @@ void string_to_lcd(unsigned char *s){
 	for(i=0;i<l;i++){
 
                                 write_lcd(*s,1);
-                                //delay_ms(1);
+                                delay_ms(1);
                                 s++;
 }
-
+}
 
 void write_lcd(unsigned char dat,unsigned int com){
 
@@ -120,6 +126,31 @@ configure timer 1 by initializing TCON and TMOD.
         string_to_lcd("FINGER")
         write_lcd(0x01,0);
         delay_ms(100);
+
+
+	LED = 0 ;
+	response = scan() ;
+	if (response == CMD_SUCCESS){
+	
+	write_lcd(0x81,0);
+        string_to_lcd("FINGER");
+        write_lcd(0xc4,0);
+        string_to_lcd("DETECTED");
+        write_lcd(0x01,0);
+        delay_ms(100);
+
+	LED = 1 ;
+	}
+	
+	else {
+	write_lcd(0x81,0);
+        string_to_lcd("ERROR");
+        write_lcd(0xc4,0);
+        string_to_lcd("TRY AGAIN");
+        write_lcd(0x01,0);
+        delay_ms(100);
+	
+//////When the finger is detected , two options either to auth or enrol 
 ///////// Add           
             if(SW_ADD==0)   // check for Add switch
             {               
@@ -129,8 +160,8 @@ configure timer 1 by initializing TCON and TMOD.
                 FP_ADD = 1;
                  
                
-                response = scan(); //loop till character received
-                if(response==CMD_SUCCESS) // if error
+                response = enrol();
+                if(response==ENROL_SUCCESS) 
                 {
                     
                     write_lcd(0xc4,0);
@@ -139,7 +170,7 @@ configure timer 1 by initializing TCON and TMOD.
                     delay_ms(100);
                 } else
                 {                   
-                    // response variable has the newly added ID
+                 
 
                     write_lcd(0xc4,0);
                     string_to_lcd("ERROR");
@@ -147,59 +178,7 @@ configure timer 1 by initializing TCON and TMOD.
                     delay_ms(100);
             }
              
-///////// Empty         
-            if(SW_EMPTY==0) // check for Add switch
-            {               
-                // Trigger Empty Function
-                FP_EMPTY = 0;
-                delay_ms(50);
-                FP_EMPTY = 1;
-                 
-                
-                response = clr_lib(); 
-                if(response==CMD_SUCCESS) // 
-                {
-                    
-                   write_lcd(0xc4,0);
-                    string_to_lcd("SUCCESS");
-                    write_lcd(0x01,0);
-                    delay_ms(100);
-                } else
-                {                   
-                   
-                    write_lcd(0xc4,0);
-                    string_to_lcd("ERROR");
-                    write_lcd(0x01,0);
-                    delay_ms(100);                 
-                }
-            }
-             
-///////// Search            
-            if(SW_SEARCH==0)    // check for Add switch
-            {               
-                // Trigger Add Function
-                FP_SEARCH = 0;
-                delay_ms(50);
-                FP_SEARCH = 1;
-                 
-                // Check response byte
-                response = (); //loop till character received
-                if(response==0xFF) // if error
-                {
-                    // Do something like LCD error print
-                    write_lcd(0xc4,0);
-                    string_to_lcd("ERROR");
-                    write_lcd(0x01,0);
-                    delay_ms(100);
-                } else
-                {                   
-                    // response variable has the found ID in database
-                    // Do something like LCD ID print like Search succesful with ID
-                    write_lcd(0xc4,0);
-                    string_to_lcd("SUCCESS");
-                    write_lcd(0x01,0);
-                    delay_ms(100);                
-                }
-            }                       
+
+                     
     } // end while
 }// end main

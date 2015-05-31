@@ -10,17 +10,21 @@ void string_to_lcd(unsigned char *s);
 void write_lcd(unsigned char dat,unsigned int com);
 void delay_ms(unsigned int x);
 
-//pin description for the lcd interface --- 4 bit mode
+//pin description for the lcd interface --- 8 bit mode
 
-sbit D4=P1^2;
-sbit D5=P1^3;
-sbit D6=P1^4;
-sbit D7=P1^5;
+sbit D0=P2^0;
+sbit D1=P2^1;
+sbit D2=P2^2;
+sbit D3=P2^3;
+sbit D4=P2^4;
+sbit D5=P2^5;
+sbit D6=P2^6;
+sbit D7=P2^7;
 
-sbit EN=P1^6;//Enable pin is for starting or enabling the module. A high
+sbit EN=P3^6;//Enable pin is for starting or enabling the module. A high
              //to low pulse of about 450ns pulse is given to this pin.
 
-sbit RS=P1^7;//RS is the register select pin used to write display
+sbit RS=P3^0;//RS is the register select pin used to write display
              //data to the LCD (characters), this pin has to be high
              //when writing the data to the LCD. During the initializing
              //sequence and other commands this pin should low.
@@ -32,7 +36,7 @@ sbit LED = P3^5 ;
 
  
  
-sbit FP_ADD        = P3^2;
+sbit FP_ADD         = P3^2;
 sbit FP_EMPTY       = P3^3;
 sbit FP_SEARCH      = P3^4;
  

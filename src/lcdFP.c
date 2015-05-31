@@ -12,6 +12,7 @@ void delay_ms(unsigned int x);
 
 //pin description for the lcd interface --- 8 bit mode
 
+/*
 sbit D0=P2^0;
 sbit D1=P2^1;
 sbit D2=P2^2;
@@ -20,7 +21,8 @@ sbit D4=P2^4;
 sbit D5=P2^5;
 sbit D6=P2^6;
 sbit D7=P2^7;
-
+*/
+sfr LCD = 0xa0 ;//check
 sbit EN=P3^6;//Enable pin is for starting or enabling the module. A high
              //to low pulse of about 450ns pulse is given to this pin.
 
@@ -83,6 +85,16 @@ void delay_ms(unsigned int x)    // delays x msec (at 11.0592MHz)
         while(x-- > 0){
         for (j=0; j<125; j++){;}
 	}
+
+ //timers
+TMOD=0x01;
+TH0=0x3c;
+TL0=0xb0;
+TR0=1;
+while(!TF0);
+TF0=0;
+TR0=0;
+
 }
 
 

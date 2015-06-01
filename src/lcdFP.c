@@ -22,7 +22,7 @@ sbit D5=P2^5;
 sbit D6=P2^6;
 sbit D7=P2^7;
 */
-sfr LCD = 0xa0 ;//check
+sfr LCD = 0xa0 ;//special function register set for LCD {Checked on Proteus}
 sbit EN=P3^6;//Enable pin is for starting or enabling the module. A high
              //to low pulse of about 450ns pulse is given to this pin.
 
@@ -165,7 +165,7 @@ configure timer 1 by initializing TCON and TMOD.
         string_to_lcd("TRY AGAIN");
         write_lcd(0x01,0);
         delay_ms(100);
-	
+	}
 //////When the finger is detected , two options either to auth or enrol 
 ///////// Add           
             if(SW_ADD==0)   // check for Add switch
@@ -195,6 +195,6 @@ configure timer 1 by initializing TCON and TMOD.
             }
              
 
-                     
+         }            
     } // end while
 }// end main

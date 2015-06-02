@@ -33,7 +33,7 @@ sbit RS=P3^0;//RS is the register select pin used to write display
  
 sbit SW_ADD        = P1^0;
 sbit SW_SEARCH     = P1^1;
-
+sbit SW_EMPTY      = P1^2;
 sbit LED = P3^5 ;
 
  
@@ -166,7 +166,7 @@ configure timer 1 by initializing TCON and TMOD.
         write_lcd(0x01,0);
         delay_ms(100);
 	}
-//////When the finger is detected , two options either to auth or enrol 
+//////When the finger is detected , options auth / enroll / delete 
 ///////// Add           
             if(SW_ADD==0)   // check for Add switch
             {               
@@ -194,7 +194,34 @@ configure timer 1 by initializing TCON and TMOD.
                     delay_ms(100);
             }
              
+/////////CLEAR LIBRARY [can't clear one FP , it will clear the whole lib]
+            if(SW_EMPTY==0)   // check for Add switch
+            {               
+                // Trigger Empty Function
+                FP_EMPTY = 0;
+                delay_ms(50);
+                FP_EMPTY = 1;
+                 
+               
+                response = clrlib();
+                if(response==CMD_SUCCESS) 
+                {
+                    
+                    write_lcd(0xc4,0);
+                    string_to_lcd("SUCCESS");
+                    write_lcd(0x01,0);
+                    delay_ms(100);
+                } else
+                {                   
+                 
 
+                    write_lcd(0xc4,0);
+                    string_to_lcd("ERROR");
+                    write_lcd(0x01,0);
+                    delay_ms(100);
+            }
+             
+         
          }            
     } // end while
 }// end main

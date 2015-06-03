@@ -1,9 +1,6 @@
 #ifndef _R305_FINGERPRINT_H_
 #define _R305_FINGERPRINT_H_
 
-#define MAX_ACK_LENGTH 36
-#define MAX_CMD_LENGTH 36
-
 #define CMD_FAIL        0x00
 #define CMD_SUCCESS     0x01
 #define ENROL_FAIL      0x02
@@ -20,17 +17,17 @@ typedef unsigned char uint1;
 
 void cmdTransmit(uint1 *DATA, uint2 lenDATA);
 uint1 *cmdReceive(uint2 lenDATA);
-uint1 getNTemp();
-uint1 clrLib();
+uint1 getNTemp(uint2 *nTemp);
+uint1 clrLib(void);
 
-uint1 genImg();
+uint1 genImg(void);
 uint1 genChar(uint1 buffID);
-uint1 genTemp();
+uint1 genTemp(void);
 uint1 strTemp(uint1 buffID);
 uint1 srchLib(uint1 buffID, uint2 *pageID);
 
-uint1 scan();
+uint1 scan(void);
 uint1 auth(uint2 *uID);
-uint1 enrol();
+uint1 enrol(void);
 
 #endif

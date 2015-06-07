@@ -4,13 +4,6 @@
 #include<lcd_8051.h>
 
 
-char response;
-void move(void);           
-void initial_lcd(void);
-void string_to_lcd(unsigned char *s);
-void write_lcd(unsigned char dat,unsigned int com);
-void delay_ms(unsigned int x);
-
 
 /////////////functions for the LCD---------------------------------------
 

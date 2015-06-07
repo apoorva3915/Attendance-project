@@ -1,6 +1,7 @@
 #include<reg51.h>
 #include "r305-fingerprint.h"
 #include <stdio.h>
+#include<lcd_8051.h>
 
 
 

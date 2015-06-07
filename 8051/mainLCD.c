@@ -94,7 +94,7 @@ configure timer 1 by initializing TCON and TMOD.
         write_lcd(0x01,0);
         delay_ms(100);
 
-	LED = 1 ;
+	LED = 1 ;// check the LED , delay timings with the scan() function 
 	}
 	
 	else {
@@ -105,7 +105,15 @@ configure timer 1 by initializing TCON and TMOD.
         write_lcd(0x01,0);
         delay_ms(100);
 	}
-//////When the finger is detected , options auth / enroll / delete 
+//////When the finger is detected , options TO auth / enroll / delete 
+
+	write_lcd(0x81,0);
+        string_to_lcd("PRESS ANY");
+        write_lcd(0xc4,0);
+        string_to_lcd("KEY");
+        write_lcd(0x01,0);
+        delay_ms(100);
+
 ///////// Add           
             if(SW_ADD==0)   // check for Add switch
             {               
@@ -161,6 +169,20 @@ configure timer 1 by initializing TCON and TMOD.
             }
              
          
-         }            
+         } //end if     
+
+	if(SW_SEARCH==0)   // check for SEARCH switch
+            {               
+                // Trigger Empty Function
+                FP_SEARCH = 0;
+                delay_ms(50);
+                FP_SEARCH = 1;
+                 
+               
+                response = ;
+          
+             
+         
+         } //end if        
     } // end while
 }// end main

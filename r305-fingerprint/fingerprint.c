@@ -60,11 +60,11 @@ unsigned char strTemp(unsigned char buffID) {
     ++nTemp;
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
-    unsigned char cmdData[4];
-    cmdData[0] = 0x06;
-    cmdData[1] = buffID;
-    cmdData[2] = pageIDH;
-    cmdData[3] = pageIDL;
+    unsigned char *cmdData = (unsigned char) malloc(4 * sizeof(unsigned char));
+    *cmdData = 0x06;
+    *(cmdData + 1) = buffID;
+    *(cmdData + 2) = pageIDH;
+    *(cmdData + 3) = pageIDL;
 
     cmdTransmit(cmdData, 4);
     switch (*cmdReceive(1)) {

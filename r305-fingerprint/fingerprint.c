@@ -19,7 +19,9 @@ uint1 genImg() {
 }
 
 uint1 genChar(uint1 buffID) {
-    uint1 cmdData[] = {0x02, buffID};
+    uint1 cmdData[2];
+    cmdData[0] = 0x02;
+    cmdData[1] = buffID;
 
     cmdTransmit(cmdData, 2);
     switch (*cmdReceive(1)) {
@@ -53,12 +55,15 @@ uint1 genTemp() {
 }
 
 uint1 strTemp(uint1 buffID) {
-    uint1 pageIDL, pageIDH;
+    uint1 pageIDL, pageIDH, cmdData[4];
     extern uint2 nTemp;
     ++nTemp;
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
-    uint1 cmdData[] = {0x06, buffID, pageIDH, pageIDL};
+    cmdData[0] = 0x06;
+    cmdData[1] = buffID;
+    cmdData[2] = pageIDH;
+    cmdData[3] = pageIDL;
 
     cmdTransmit(cmdData, 4);
     switch (*cmdReceive(1)) {
@@ -78,9 +83,14 @@ uint1 strTemp(uint1 buffID) {
 }
 
 uint1 srchLib(uint1 buffID, uint2 *pageID) {
-    uint1 cmdData[] = {0x04, buffID, 0x00, 0x00, 0x01, 0xFF};
-    uint1 *ackData, pageIDH, pageIDL;
-
+    uint1 cmdData[6], *ackData, pageIDH, pageIDL;
+    cmdData[0] = 0x04;
+    cmdData[1] = buffID;
+    cmdData[2] = 0x00;
+    cmdData[3] = 0x00;
+    cmdData[4] = 0x01;
+    cmdData[5] = 0xFF;
+    
     cmdTransmit(cmdData, 6);
     ackData = cmdReceive(5);
     switch (*ackData) {

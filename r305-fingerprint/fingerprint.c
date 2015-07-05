@@ -1,8 +1,8 @@
 #include "../8051/8051.h"
 #include "r305-fingerprint.h"
 
-uint1 genImg() {
-    uint1 cmdData[] = {0x01};
+unsigned char genImg() {
+    unsigned char cmdData[] = {0x01};
 
     cmdTransmit(cmdData, 1);
     switch (*cmdReceive(1)) {
@@ -18,8 +18,8 @@ uint1 genImg() {
     }
 }
 
-uint1 genChar(uint1 buffID) {
-    uint1 cmdData[2];
+unsigned char genChar(unsigned char buffID) {
+    unsigned char cmdData[2];
     cmdData[0] = 0x02;
     cmdData[1] = buffID;
 
@@ -38,8 +38,8 @@ uint1 genChar(uint1 buffID) {
     }
 }
 
-uint1 genTemp() {
-    uint1 cmdData[] = {0x05};
+unsigned char genTemp() {
+    unsigned char cmdData[] = {0x05};
 
     cmdTransmit(cmdData, 1);
     switch (*cmdReceive(1)) {
@@ -54,13 +54,13 @@ uint1 genTemp() {
     }
 }
 
-uint1 strTemp(uint1 buffID) {
-    uint1 pageIDL, pageIDH;
-    extern uint2 nTemp;
+unsigned char strTemp(unsigned char buffID) {
+    unsigned char pageIDL, pageIDH;
+    extern unsigned int nTemp;
     ++nTemp;
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
-    uint1 cmdData[4];
+    unsigned char cmdData[4];
     cmdData[0] = 0x06;
     cmdData[1] = buffID;
     cmdData[2] = pageIDH;
@@ -83,15 +83,15 @@ uint1 strTemp(uint1 buffID) {
     }
 }
 
-uint1 srchLib(uint1 buffID, uint2 *pageID) {
-    uint1 cmdData[6];
+unsigned char srchLib(unsigned char buffID, unsigned int *pageID) {
+    unsigned char cmdData[6];
     cmdData[0] = 0x04;
     cmdData[1] = buffID;
     cmdData[2] = 0x00;
     cmdData[3] = 0x00;
     cmdData[4] = 0x01;
     cmdData[5] = 0xFF;
-    uint1 *ackData, pageIDH, pageIDL;
+    unsigned char *ackData, pageIDH, pageIDL;
 
     cmdTransmit(cmdData, 6);
     ackData = cmdReceive(5);

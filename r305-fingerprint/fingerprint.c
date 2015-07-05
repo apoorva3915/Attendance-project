@@ -55,16 +55,15 @@ unsigned char genTemp() {
 }
 
 unsigned char strTemp(unsigned char buffID) {
-    unsigned char pageIDL, pageIDH;
+    unsigned char pageIDL, pageIDH, cmdData[4];
     extern unsigned int nTemp;
     ++nTemp;
     pageIDL = nTemp;
     pageIDH = nTemp >> 8;
-    unsigned char *cmdData = (unsigned char) malloc(4 * sizeof(unsigned char));
-    *cmdData = 0x06;
-    *(cmdData + 1) = buffID;
-    *(cmdData + 2) = pageIDH;
-    *(cmdData + 3) = pageIDL;
+    cmdData[0] = 0x06;
+    cmdData[1] = buffID;
+    cmdData[2] = pageIDH;
+    cmdData[3] = pageIDL;
 
     cmdTransmit(cmdData, 4);
     switch (*cmdReceive(1)) {
@@ -84,15 +83,14 @@ unsigned char strTemp(unsigned char buffID) {
 }
 
 unsigned char srchLib(unsigned char buffID, unsigned int *pageID) {
-    unsigned char cmdData[6];
+    unsigned char cmdData[6], *ackData, pageIDH, pageIDL;
     cmdData[0] = 0x04;
     cmdData[1] = buffID;
     cmdData[2] = 0x00;
     cmdData[3] = 0x00;
     cmdData[4] = 0x01;
     cmdData[5] = 0xFF;
-    unsigned char *ackData, pageIDH, pageIDL;
-
+    
     cmdTransmit(cmdData, 6);
     ackData = cmdReceive(5);
     switch (*ackData) {

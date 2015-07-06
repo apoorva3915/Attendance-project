@@ -105,7 +105,7 @@ configure timer 1 by initializing TCON and TMOD.
         write_lcd(0x01,0);
         delay_ms(100);
 	}
-//////When the finger is detected , options TO auth / enroll / delete 
+//////When the finger is detected , options to auth / enroll / delete 
 
 	write_lcd(0x81,0);
         string_to_lcd("PRESS ANY");
